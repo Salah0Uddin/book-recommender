@@ -11,7 +11,7 @@ import gradio as gr
 
 load_dotenv()
 
-# Load books dataset
+# Load dataset
 books = pd.read_csv("books_with_emotions.csv")
 books["large_thumbnail"] = books["thumbnail"] + "&fife=w800"
 books["large_thumbnail"] = np.where(
@@ -97,16 +97,16 @@ with gr.Blocks(theme=gr.themes.Base(), title="Book Recommender") as dashboard:
                 ],
                 inputs=[user_query, category_dropdown, tone_dropdown]
             )
+
         with gr.Column(scale=2):
-            # Prefer local video if available; fallback to YouTube
             try:
                 gr.Video("intro.mp4", label="🎥 How this works")
             except:
                 gr.HTML("""
-                <iframe width="100%" height="315"
-                    src="https://www.youtube.com/embed/eg5I2UrpU8A"
-                    title="Recommender Video"
-                    frameborder="0" allowfullscreen></iframe>
+                    <iframe width="100%" height="315"
+                        src="https://www.youtube.com/embed/eg5I2UrpU8A"
+                        title="Recommender Video"
+                        frameborder="0" allowfullscreen></iframe>
                 """)
 
     gr.Markdown("## 📖 Recommendations Just for You")
@@ -114,14 +114,13 @@ with gr.Blocks(theme=gr.themes.Base(), title="Book Recommender") as dashboard:
 
     submit_button.click(fn=recommend_books, inputs=[user_query, category_dropdown, tone_dropdown], outputs=output)
 
-# Launch with PWA and optional favicon
+# Launch
 if __name__ == "__main__":
     dashboard.launch(
-        share=True,  # Generates a public URL
-        server_name="0.0.0.0",  # Optional, for local network access
-        server_port=7860,  # Optional, change port
-        favicon_path="book-icon.png",  # Optional, custom icon
-        pwa=True,  # Optional, enables Progressive Web App
-        debug=True  # Optional, shows detailed error tracebacks
+        share=True,
+        server_name="0.0.0.0",
+        server_port=7860,
+        favicon_path="book-icon.png",
+        pwa=True,
+        debug=True
     )
-
